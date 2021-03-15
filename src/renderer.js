@@ -4,11 +4,22 @@ import {
 } from './vnode';
 import { nodeOps } from './nodeOps';
 
-const {
-  createText,
-  insert,
-  setText
-} = nodeOps;
+const doc = document;
+const nodeOps = {
+  createText(text) {
+    return doc.createTextNode(text);
+  },
+  insert(node, container, anchor) {
+    if (anchor) {
+      return container.insertBefore(node, anchor)
+    } else {
+      return container.appendChild(node)
+    }
+  },
+  setText(node, text) {
+    node.nodeValue = text
+  }
+}
 
 const patch = (
   n1,
@@ -53,12 +64,12 @@ const processText = (
   anchor
 ) => {
   if (n1 == null) {
-    n2.el = createText(n2.children)
-    insert(n2.el, container, anchor)
+    n2.el = nodeOps.createText(n2.children)
+    nodeOps.insert(n2.el, container, anchor)
   } else {
     const el = n2.el = n1.el;
     if (n2.children !== n1.children) {
-      setText(el, n2.children)
+      nodeOps.setText(el, n2.children)
     }
   }
 }
