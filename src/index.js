@@ -1,6 +1,7 @@
 
-import { createVNode } from './vnode';
-import { render } from './renderer';
+import { createVNode } from './vnode.js';
+import { render } from './renderer.js';
+export * from './reactivity.js';
 
 export const createApp = (root) => {
   const context = {

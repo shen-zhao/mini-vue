@@ -4,9 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "http-server ./ -p 9991",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "directories": {
+    "example": "example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shen-zhao/mini-vue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shen-zhao/mini-vue/issues"
+  },
+  "homepage": "https://github.com/shen-zhao/mini-vue#readme",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
 }

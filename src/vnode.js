@@ -2,7 +2,7 @@ import {
   isString,
   isObject,
   isFunction
-} from 'utils'
+} from './utils.js'
 
 export const Text = Symbol('Text');
 
@@ -12,9 +12,10 @@ export const ShapeFlags = {
   STATEFUL_COMPONENT: 1 << 2,
   TEXT_CHILDREN: 1 << 3,
   ARRAY_CHILDREN: 1 << 4,
-  SLOTS_CHILDREN: 1 << 5,
-  COMPONENT: ShapeFlags.FUNCTIONAL_COMPONENT | ShapeFlags.STATEFUL_COMPONENT
+  SLOTS_CHILDREN: 1 << 5
 }
+
+ShapeFlags.COMPONENT = ShapeFlags.FUNCTIONAL_COMPONENT | ShapeFlags.STATEFUL_COMPONENT
 
 export const createVNode = (type, props, children) => {
   const shapeFlag = isString(type)

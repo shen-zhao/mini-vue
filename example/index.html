@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<script src="./reactivity.global.js"></script>
+<script>
+const { reactive, effect } = VueReactivity;
+
+const data = reactive({
+  count: 1
+});
+
+const render = effect(() => {
+  console.log('effect', data.count);
+}, {
+  lazy: true
+});
+
+render();
+
+data.count += 1;
+</script>
+</body>
+</html>

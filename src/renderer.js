@@ -1,8 +1,7 @@
 import {
   Text,
   ShapeFlags
-} from './vnode';
-import { nodeOps } from './nodeOps';
+} from './vnode.js';
 
 const doc = document;
 const nodeOps = {
@@ -81,6 +80,15 @@ const processElement = (
   anchor
 ) => {
   
+}
+
+const processComponent = (
+  n1,
+  n2,
+  container,
+  anchor
+) => {
+
 }
 
 export const render = (root, container) => {
