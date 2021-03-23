@@ -17,16 +17,20 @@ const data = reactive({
 });
 
 effect(() => {
-  console.log('count', data.count);
-  effect(() => {
-    console.log('age', data.age);
-  })
-});
+  console.log(data.count);
+  if (data.count < 100) {
+    data.count++
+  }
+  // console.log('count', data.count);
+  // effect(() => {
+  //   console.log('age', data.age);
+  // })
+}, { allowRecurse: true });
 
-data.count++;
+// data.count++;
 
-setTimeout(() => {
-  data.age++;
-}, 2000)
+// setTimeout(() => {
+//   data.count++;
+// }, 2000)
 
 

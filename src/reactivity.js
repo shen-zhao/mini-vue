@@ -68,11 +68,14 @@ export const effect = (fn, options = {}) => {
     }
   }
 
-  effect.uid = ++uid;
+  effect.id = uid++;
+  effect._isEffect = true;
+  effect.allowRecurse = !!options.allowRecurse;
+  effect.raw = fn;
   effect.deps = [];
   effect.options = options;
 
-  if (!effect.options.lazy) {
+  if (!options.lazy) {
     effect();
   }
 
@@ -123,7 +126,7 @@ const trigger = (target, property) => {
   }
   const effects = new Set();
   dep.forEach(effect => {
-    if (effect !== activeEffect) {
+    if (effect !== activeEffect || effect.allowRecurse) {
       effects.add(effect);
     }
   })

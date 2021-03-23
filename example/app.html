@@ -5,9 +5,41 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    #root {
+      width: 200px;
+      margin: 100px auto;
+      border: 1px solid red;
+      display: flex;
+    }
+    .wrap {
+      display: flex;
+      min-width: 0;
+    }
+    .left {
+      flex-shrink: 0;
+    }
+    .right {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* min-width: 0px; */
+    }
+  </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+  <div class="wrap">
+    <div class="left">标题：</div>
+    <div class="right">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</div>
+  </div>
+</div>
 <script type="module" src="./vue.js"></script>
+
 </body>
 </html>
