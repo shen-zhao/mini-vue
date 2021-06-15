@@ -3,6 +3,7 @@ import {
   ShapeFlags,
   isSameVNode
 } from './vnode.js'
+import { queueJob, invalidateJob } from './scheduler.js';
 import {
   createComponentInstance,
   renderComponentRoot
@@ -59,6 +60,10 @@ const nodeOps = {
               el.removeEventListener(name, invokers[name])
               invokers[name] = undefined
             }
+          }
+        } else {
+          if (prevValue !== nextValue) {
+            el[key] = nextValue
           }
         }
     }
@@ -121,9 +126,7 @@ const processText = (
     nodeOps.insert(n2.el, container, anchor)
   } else {
     const el = n2.el = n1.el;
-    if (n2.children !== n1.children) {
-      nodeOps.setText(el, n2.children)
-    }
+    nodeOps.setText(el, n2.children)
   }
 }
 
@@ -202,8 +205,8 @@ const patchElement = (
   )
 
   patchChildren(
-    n1.children,
-    n2.children,
+    n1.children || [],
+    n2.children || [],
     n2.el,
     parentComponent
   )
@@ -323,11 +326,15 @@ const mountComponent = (
       // 父级触发更新
       if (next) {
         next.el = vnode.el
+        updateComponentProps(vnode, next)
+        instance.next = null
       } else { // 自更新
         next = vnode
       }
+
       const prevTree = instance.subTree
       const nextTree = renderComponentRoot(instance)
+      nextTree.component = instance
 
       patch(
         prevTree,
@@ -337,7 +344,30 @@ const mountComponent = (
         instance
       )
     }
+  }, {
+    scheduler: queueJob,
+    allowRecurse: true
   })
+}
+
+const updateComponent = (
+  n1,
+  n2
+) => {
+  const instance = n1.component
+  instance.next = n2
+  // 如果组件本身进入队列，则需要重队列中删除
+  invalidateJob(instance.update)
+  instance.update()
+}
+
+const updateComponentProps = (n1, n2) => {
+  const { props: prevProps = {} } = n1
+  const { props: nextProps = {} } = n2
+
+  for (let key in prevProps) {
+    prevProps[key] = nextProps[key]
+  }
 }
 
 const unmount = () => {

@@ -1,4 +1,5 @@
 import { ShapeFlags } from './vnode.js';
+import { reactive } from './reactivity.js';
 
 export const createComponentInstance = (vnode, parent) => {
   const {
@@ -7,10 +8,12 @@ export const createComponentInstance = (vnode, parent) => {
   } = vnode
   
   const { setup } = Component;
+  // reactive props as shallow
+  const reactiveProps = reactive(props, true)
 
   let res;
   if (typeof setup === 'function') {
-    res = setup();
+    res = setup(reactiveProps);
   }
 
   let render = typeof res === 'function' ? res : Component.render
@@ -23,7 +26,7 @@ export const createComponentInstance = (vnode, parent) => {
     type: Component,
     vnode,
     render,
-    props,
+    props: reactiveProps,
     parent
   }
   // root ref

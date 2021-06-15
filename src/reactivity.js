@@ -12,7 +12,7 @@ let activeEffect = null;
  * @param {typeof object} target 
  * @returns Proxy
  */
-export const reactive = (target) => {
+export const reactive = (target, isShallow = false) => {
   if (!isObject(target)) {
     return;
   }
@@ -21,7 +21,9 @@ export const reactive = (target) => {
     get(target, property, receiver) {
       track(target, property)
       const res = Reflect.get(target, property, receiver);
-      reactive(res);
+      if (!isShallow) {
+        reactive(res);
+      }
 
       return res;
     },
@@ -132,8 +134,8 @@ const trigger = (target, property) => {
   })
 
   effects.forEach(effect => {
-    if (effect.options.schedule) {
-      effect.options.schedule(effect);
+    if (effect.options.scheduler) {
+      effect.options.scheduler(effect);
     } else {
       effect();
     }
