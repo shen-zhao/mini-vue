@@ -19,9 +19,6 @@ const app = createApp({
 
     let add = () => {
       data.count++
-      data.count++
-      data.count++
-      data.count++
     }
 
     let decrease = () => {
@@ -29,12 +26,10 @@ const app = createApp({
     }
 
     let onChange = (e) => {
-      console.log(e.target.value)
       data.title = e.target.value
     }
 
     return () => {
-      console.log('render root', data.count)
       return createVNode('div', {}, [
         createVNode(Title, {
           title: data.title

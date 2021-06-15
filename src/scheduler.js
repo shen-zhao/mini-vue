@@ -39,7 +39,6 @@ function findInsertIndex(job) {
 }
 
 export function queueJob(job) {
-  console.log(queue)
   if (!queue.length || (!queue.includes(job, isFlushing && job.allowRecurse ? flushIndex + 1 : flushIndex))) {
     const pos = findInsertIndex(job);
     if (pos > -1) {
