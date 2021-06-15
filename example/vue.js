@@ -1,36 +1,41 @@
-import { createApp, reactive, effect } from '../src/index.js';
+import { createApp, reactive, createVNode, createTextVNode } from '../src/index.js';
 
 const app = createApp({
   setup() {
-    return 'hh'
+    let data = reactive({
+      count: 0
+    })
+
+    let add = () => {
+      data.count++
+    }
+
+    let decrease = () => {
+      data.count--
+    }
+
+    return () => {
+      return createVNode('div', {}, [
+        createVNode('button', {
+          onClick: (ev) => {
+            console.log('add', ev)
+            add()
+          }
+        }, [
+          createTextVNode('+')
+        ]),
+        createTextVNode(` ${data.count}  `),
+        createVNode('button', {
+          onClick: (ev) => {
+            console.log('decrease', ev)
+            decrease()
+          }
+        }, [
+          createTextVNode('-')
+        ]),
+      ])
+    }
   }
 });
 
-console.log(app);
-
-app.mount('#root');
-
-
-const data = reactive({
-  count: 1,
-  age: 18
-});
-
-effect(() => {
-  console.log(data.count);
-  if (data.count < 100) {
-    data.count++
-  }
-  // console.log('count', data.count);
-  // effect(() => {
-  //   console.log('age', data.age);
-  // })
-}, { allowRecurse: true });
-
-// data.count++;
-
-// setTimeout(() => {
-//   data.count++;
-// }, 2000)
-
-
+app.mount('#root')

@@ -9,10 +9,7 @@ export const Text = Symbol('Text');
 export const ShapeFlags = {
   ELEMENT: 1,
   FUNCTIONAL_COMPONENT: 1 << 1,
-  STATEFUL_COMPONENT: 1 << 2,
-  TEXT_CHILDREN: 1 << 3,
-  ARRAY_CHILDREN: 1 << 4,
-  SLOTS_CHILDREN: 1 << 5
+  STATEFUL_COMPONENT: 1 << 2
 }
 
 ShapeFlags.COMPONENT = ShapeFlags.FUNCTIONAL_COMPONENT | ShapeFlags.STATEFUL_COMPONENT
@@ -24,7 +21,7 @@ export const createVNode = (type, props, children) => {
       ? ShapeFlags.STATEFUL_COMPONENT
       : isFunction(type)
         ? ShapeFlags.FUNCTIONAL_COMPONENT
-        : 0
+        : type
 
   return {
     type,
@@ -40,9 +37,11 @@ export const createVNode = (type, props, children) => {
 }
 
 export const createTextVNode = (text) => {
-  return createVNode(Text, text)
+  return createVNode(Text, null, text)
 }
 
 export const isVNode = (s) => {
-  return s && s.__isVNode;
+  return s && s.__isVNode
 }
+
+export const isSameVNode = (n1, n2) => n1.type === n2.type && n1.key === n2.key

@@ -2,6 +2,7 @@
 import { createVNode } from './vnode.js';
 import { render } from './renderer.js';
 export * from './reactivity.js';
+export * from './vnode.js';
 
 export const createApp = (root) => {
   const context = {
@@ -12,14 +13,15 @@ export const createApp = (root) => {
 
   return {
     context,
-    component(name, options) {
-      context.components[name] = options;
-    },
+    // component(name, options) {
+    //   context.components[name] = options;
+    // },
     mount(selector) {
       if (isMounted) return;
 
       const container = typeof selector === 'string' ? document.querySelector(selector) : selector;
       const rootVNode = createVNode(root);
+      container.innerHTML = ''
       render(rootVNode, container);
     }
   }
